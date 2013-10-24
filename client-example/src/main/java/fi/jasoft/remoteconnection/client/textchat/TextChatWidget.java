@@ -1,26 +1,28 @@
+/*
+* Copyright 2013 John Ahlroos
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 package fi.jasoft.remoteconnection.client.textchat;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window.Location;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import fi.jasoft.remoteconnection.client.ClientRemoteChannel;
 import fi.jasoft.remoteconnection.client.ClientRemoteConnection;
-import fi.jasoft.remoteconnection.client.peer.DataConnection;
-import fi.jasoft.remoteconnection.client.peer.ObjectPeerListener;
-import fi.jasoft.remoteconnection.client.peer.Peer;
-import fi.jasoft.remoteconnection.client.peer.PeerListener;
-import fi.jasoft.remoteconnection.client.peer.StringPeerListener;
 import fi.jasoft.remoteconnection.shared.ConnectionError;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
