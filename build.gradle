@@ -1,0 +1,51 @@
+version  = 'development'
+
+subprojects {
+	apply from: 'http://plugins.jasoft.fi/vaadin.plugin'
+	apply plugin: 'eclipse'
+	sourceCompatibility = 1.6
+	targetCompatibility = 1.6
+}
+
+project(':remote-connection'){
+	vaadin {
+		widgetset 'fi.jasoft.remoteconnection.RemoteConnectionWidgetset'
+		addon {
+			author 'John Ahlroos'
+			license 'Apache License'
+			title 'RemoteConnection'
+		}
+	}
+
+	jar{ from sourceSets.main.allJava }
+}
+
+project(':server-example'){
+	dependencies {
+		compile project(':remote-connection')
+	}
+
+	vaadin {
+		widgetset 'fi.jasoft.remoteconnection.ServerExampleWidgetset'
+		gwt {
+			userAgent 'gecko1_8,safari'
+		}
+	}
+}
+
+project(':client-example'){
+        dependencies {
+                compile project(':remote-connection')
+        }       
+        
+        vaadin {
+                widgetset 'fi.jasoft.remoteconnection.ClientExampleWidgetset'
+		gwt {
+			userAgent 'gecko1_8,safari'
+			strict true
+		}
+        }       
+}
+
+
+
