@@ -15,105 +15,132 @@
 */
 package fi.jasoft.remoteconnection.client.textchat;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import fi.jasoft.remoteconnection.client.ClientRemoteConnection;
-import fi.jasoft.remoteconnection.shared.ConnectionError;
+import fi.jasoft.remoteconnection.shared.ConnectedListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
-import fi.jasoft.remoteconnection.shared.RemoteConnectionErrorHandler;
 
 /**
  * Client side widget. Can extend any GWT widget.
  */
-public class TextChatWidget extends Composite implements ChangeHandler{
-       
-    private TextArea chatWindow = new TextArea();
+public class TextChatWidget extends Composite {
+       	
+    private TextArea messages;
+        
+    private RemoteConnection peer;
     
-    private TextBox messageField = new TextBox();
-    
-    RemoteConnection remote;
+    String id = String.valueOf((((Math.random() * Long.MAX_VALUE))));
         
     public TextChatWidget() {
-    	
-    	chatWindow.setReadOnly(true);
-    	chatWindow.setWidth("400px");
-    	chatWindow.setHeight("300px");
-    	
-        messageField.addChangeHandler(this);
-        messageField.setWidth("400px");
-        
-        VerticalPanel vl = new VerticalPanel();
-        vl.add(chatWindow);
-        vl.add(messageField);
-        
-        initWidget(vl);
+    	buildUI();
     }
     
-    public void initPeerConnection(final String id) {
-    	
+    private void initConnection() {
+    	    	
     	// Create a new remote connection
-    	remote = ClientRemoteConnection.register(id);
-    	
-    	// Set an error handler
-    	remote.setErrorHandler(new RemoteConnectionErrorHandler() {
-			
-			@Override
-			public boolean onConnectionError(ConnectionError error) {
-				
-				if(error == ConnectionError.UNAVAILABLE_ID){
-					// Try again with a concatenated id					
-					initPeerConnection("_"+id+"_");					
-				} else {
-					// Just give up
-					chatWindow.setText("Connection error. ("+error+")");
-					messageField.setEnabled(false);
-				}
-				return true;
-			}
-		});
+    	peer = ClientRemoteConnection.register(id);
     	
     	// Connect to signalling server
-    	remote.connect();
+    	peer.connect();    	
     	
     	// Listen for recieved messages
-    	remote.addDataListener(new RemoteConnectionDataListener() {
+    	peer.addDataListener(new RemoteConnectionDataListener() {
 			
 			@Override
 			public void dataRecieved(RemoteChannel channel, String data) {
-				writeToChat(channel.getId()+" >> "+data);				
+				messages.setText(messages.getText()+channel.getId()+" >> "+data+"\n");				
 			}
-		});    	
+		});    	    	
     }
     
-    private void writeToChat(String text){
-    	chatWindow.setText(chatWindow.getText()+"\n"+text);
+    private void buildUI(){
+    	VerticalPanel vl = new VerticalPanel();
+
+    	// Our id
+    	TextBox myId = new TextBox();
+    	myId.setValue(id);
+    	myId.setReadOnly(true);
+    	vl.add(myId);
+    	
+    	// Remote id
+    	final TextBox remoteId = new TextBox();
+    	Button connectToRemote = new Button("Connect", new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				RemoteChannel channel = peer.openChannel(remoteId.getValue());
+				channel.addConnectedListener(new ConnectedListener() {
+					
+					@Override
+					public void connected() {
+						remoteId.setReadOnly(true);								
+						messages.setText(messages.getText()+"Connected to channel "+remoteId.getValue()+"\n");
+					}
+				});				
+			}
+		});    	
+    	
+    	HorizontalPanel pnl = new HorizontalPanel();
+    	pnl.add(remoteId);
+    	pnl.add(connectToRemote);
+    	vl.add(pnl);
+    	
+    	
+    	// Message display where messages are displayed    	
+    	messages = new TextArea();
+    	messages.setReadOnly(true);
+    	messages.setWidth("400px");
+    	messages.setHeight("300px");
+    	vl.add(messages);
+    	
+    	// Message field
+        final TextBox message = new TextBox();
+        Button send = new Button("Send", new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+
+				// Show message in message window
+				messages.setValue(messages.getValue()+peer.getId()+" >> "+message.getValue()+"\n");
+				
+				// Broadcast the message to all connected peers
+				peer.broadcast(message.getValue());
+				
+				message.setValue("");
+			}
+		});    	
+        
+        pnl = new HorizontalPanel();
+    	pnl.add(message);
+    	pnl.add(send);
+    	vl.add(pnl);
+
+        initWidget(vl);
     }
-            
-	@Override
-	public void onChange(ChangeEvent event) {
-		writeToChat(remote.getId()+" >> "+messageField.getText());
-		
-		// Send message to all channels
-		remote.broadcast(messageField.getText());		
-	}
-	
-	public void addConnection(String peerId) {
-		remote.openChannel(peerId);
-	}
-	
+    
+    @Override
+    protected void onLoad() {    	
+    	super.onLoad();
+    	// Create connection
+    	initConnection();
+    }
+    
 	@Override
 	protected void onUnload() {		
 		super.onUnload();
 		
 		// Ensure channels and connection to signalling server gets terminated
-		remote.terminate();
+		peer.terminate();
 	}
     
 }
