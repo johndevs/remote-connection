@@ -22,4 +22,6 @@ public interface RemoteChannel {
 	String getId();
 	
 	boolean isConnected();
+	
+	void addConnectedListener(ConnectedListener listener);
 }

@@ -22,7 +22,9 @@ import com.vaadin.client.extensions.AbstractExtensionConnector;
 import com.vaadin.shared.ui.Connect;
 
 import fi.jasoft.remoteconnection.ServerRemoteConnection;
+import fi.jasoft.remoteconnection.shared.ConnectedListener;
 import fi.jasoft.remoteconnection.shared.ConnectionError;
+import fi.jasoft.remoteconnection.shared.IncomingChannelConnectionListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
@@ -61,6 +63,22 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
 			}
 		});
     	
+    	connection.addConnectedListener(new ConnectedListener() {
+			
+			@Override
+			public void connected() {
+				rpc.connected();
+			}
+		});
+    	
+    	connection.addIncomingConnectionListener(new IncomingChannelConnectionListener() {
+			
+			@Override
+			public void connected(RemoteChannel channel) {
+				rpc.recievedConnection(channel.getId());				
+			}
+		});
+    	
     	// Listen for incoming rpc
     	registerRpc(RemoteConnectionClientRPC.class, new RemoteConnectionClientRPC() {
 			
@@ -71,7 +89,14 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
 			
 			@Override
 			public void openChannel(final String channelId) {				
-				connection.openChannel(channelId);				
+				RemoteChannel channel = connection.openChannel(channelId);
+				channel.addConnectedListener(new ConnectedListener() {
+					
+					@Override
+					public void connected() {
+						rpc.channelConnected(channelId);
+					}
+				});
 			}
 
 			@Override

@@ -29,6 +29,8 @@ import fi.jasoft.remoteconnection.client.peer.Peer;
 import fi.jasoft.remoteconnection.client.peer.PeerError;
 import fi.jasoft.remoteconnection.client.peer.PeerListener;
 import fi.jasoft.remoteconnection.client.peer.StringPeerListener;
+import fi.jasoft.remoteconnection.shared.ConnectedListener;
+import fi.jasoft.remoteconnection.shared.IncomingChannelConnectionListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
@@ -45,6 +47,10 @@ public class ClientRemoteConnection implements RemoteConnection {
         	
 	private final List<RemoteConnectionDataListener> listeners = new LinkedList<RemoteConnectionDataListener>();
     
+	private final List<IncomingChannelConnectionListener> incomingListeners = new LinkedList<IncomingChannelConnectionListener>();
+	
+	private final List<ConnectedListener> connectedListeners = new LinkedList<ConnectedListener>();
+	
     private Peer peer;
     
     private boolean connectedToSignallingServer = false;
@@ -211,7 +217,10 @@ public class ClientRemoteConnection implements RemoteConnection {
 		id = peerId;
 		connectedToSignallingServer = true;		
 		getLogger().info("Connected to signalling server. Listening on id "+id);				
-		flushChannelQueue();					
+		flushChannelQueue();			
+		for(ConnectedListener listener : connectedListeners) {
+			listener.connected();
+		}
 	}
 	
 	/**
@@ -227,6 +236,9 @@ public class ClientRemoteConnection implements RemoteConnection {
 		if(channel == null){		
 			channel = new ClientRemoteChannel(connection.getPeerId());			
 			connectToChannel(channel, connection);					
+			for(IncomingChannelConnectionListener listener : incomingListeners){
+				listener.connected(channel);
+			}
 		}		
 	}
 	
@@ -402,5 +414,16 @@ public class ClientRemoteConnection implements RemoteConnection {
 	 */
 	public boolean isConnected(){
 		return peer != null;
+	}
+
+	@Override
+	public void addIncomingConnectionListener(
+			IncomingChannelConnectionListener listener) {
+		incomingListeners.add(listener);
+	}
+
+	@Override
+	public void addConnectedListener(ConnectedListener listener) {
+		connectedListeners.add(listener);
 	}	
 }

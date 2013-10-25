@@ -25,7 +25,9 @@ import com.vaadin.ui.UI;
 
 import fi.jasoft.remoteconnection.client.RemoteConnectionClientRPC;
 import fi.jasoft.remoteconnection.client.RemoteConnectionServerRPC;
+import fi.jasoft.remoteconnection.shared.ConnectedListener;
 import fi.jasoft.remoteconnection.shared.ConnectionError;
+import fi.jasoft.remoteconnection.shared.IncomingChannelConnectionListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
@@ -47,12 +49,19 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		
 		@Override
 		public void recievedConnection(String id) {
-			channels.add(new ServerRemoteChannel(id));			
+			ServerRemoteChannel channel = new ServerRemoteChannel(id);
+			channels.add(channel);	
+			for(IncomingChannelConnectionListener listener : incomingListeners) {
+				listener.connected(channel);
+			}
 		}
 
 		@Override
 		public void connected() {
-			connected = true;			
+			connected = true;		
+			for(ConnectedListener listener : connetedListeners) {
+				listener.connected();
+			}
 		}
 
 		@Override
@@ -75,6 +84,8 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	
 	// Currently attached data listeners
 	private final List<RemoteConnectionDataListener> listeners = new LinkedList<RemoteConnectionDataListener>();
+	private final List<IncomingChannelConnectionListener> incomingListeners = new LinkedList<IncomingChannelConnectionListener>();
+	private final List<ConnectedListener> connetedListeners = new LinkedList<ConnectedListener>();
 	
 	private boolean connected = false;
 	
@@ -103,8 +114,8 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 			if(channel.getId().equals(id)){
 				return channel;
 			}
-		}
-		return new ServerRemoteChannel(id);
+		}		
+		return null;
 	}
 	
 	/**
@@ -129,7 +140,7 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	 * @return
 	 *		Returns the connection to communicate with remote channels with
 	 */
-	public static ServerRemoteConnection register(UI ui, String peerId){
+	public static RemoteConnection register(UI ui, String peerId){
 		ServerRemoteConnection peer = register(ui);
 		peer.getState().id = peerId;
 		return peer;
@@ -193,6 +204,10 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	public void addDataListener(RemoteConnectionDataListener listener) {
 		listeners.add(listener);
 	}
+	
+	public void addIncomingConnectionListener(IncomingChannelConnectionListener listener) {
+		incomingListeners.add(listener);
+	}
 
 	@Override
 	public void broadcast(String message) {
@@ -230,6 +245,11 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	public void setErrorHandler(RemoteConnectionErrorHandler handler) {
 		errorHandler = handler;		
 	}
+
+	@Override
+	public void addConnectedListener(ConnectedListener listener) {
+		connetedListeners.add(listener);	
+	}
 	
 	/**
 	 * A channel between two remote connections
@@ -240,6 +260,8 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		private final String id;
 		
 		private boolean connected = false;
+		
+		private List<ConnectedListener> connectedListeners = new LinkedList<ConnectedListener>();
 		
 		public ServerRemoteChannel(String id){
 			this.id = id;			
@@ -261,12 +283,23 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		
 		private void setConnected(boolean connected){
 			this.connected = connected;
+			if(connected){
+				for(ConnectedListener listener : connectedListeners){
+					listener.connected();
+				}
+			}
 		}
 
 		@Override
 		public boolean isConnected() {			
 			return connected;
 		}
+
+		@Override
+		public void addConnectedListener(ConnectedListener listener) {
+			connectedListeners.add(listener);
+		}
 	}
+
 
 }

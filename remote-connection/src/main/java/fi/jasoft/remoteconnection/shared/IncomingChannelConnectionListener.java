@@ -17,4 +17,5 @@ package fi.jasoft.remoteconnection.shared;
 
 public interface IncomingChannelConnectionListener {
 
+	void connected(RemoteChannel channel);
 }

@@ -22,6 +22,10 @@ public interface RemoteConnection {
 	public RemoteChannel openChannel(String endpointPeerId);
 	
 	public void addDataListener(RemoteConnectionDataListener listener);
+
+	public void addIncomingConnectionListener(IncomingChannelConnectionListener listener);
+	
+	public void addConnectedListener(ConnectedListener listener);
 	
 	public void broadcast(String message);
 	
