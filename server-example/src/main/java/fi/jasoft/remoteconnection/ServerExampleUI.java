@@ -18,8 +18,14 @@ package fi.jasoft.remoteconnection;
 import java.util.UUID;
 
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.ClientConnector.DetachEvent;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Label;
@@ -28,51 +34,135 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.annotations.Theme;
 
+import fi.jasoft.remoteconnection.shared.ConnectedListener;
+import fi.jasoft.remoteconnection.shared.IncomingChannelConnectionListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
+import fi.jasoft.remoteconnection.shared.RemoteConnection;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
 
 @Theme("ServerExample")
 public class ServerExampleUI extends UI{
 
+	private RemoteConnection peer;
+	
+	private TextArea messages;
+	
 	protected void init(VaadinRequest request) {
-		VerticalLayout vl = new VerticalLayout();
-		setContent(vl);
 		
+		/*
+		 *  Setup the remote connection and start listening for messages
+		 */
+		initConnection();
+		
+		/*
+		 * Build the chat application UI
+		 */
+		buildUI();
+	}
+	
+	private void initConnection(){
+		
+		// Create a random unique id for our chat user
 		final String id = UUID.randomUUID().toString();
-		vl.addComponent(new Label(id));
 		
 		// Create a connection
-		final ServerRemoteConnection peer = ServerRemoteConnection.register(this, id);
+		peer = ServerRemoteConnection.register(this, id);
 		
-		// Connect the connection
+		// Connect to pairing server
 		peer.connect();
 		
 		// Listen to incoming data
-		peer.addDataListener(new RemoteConnectionDataListener() {
-			
+		peer.addDataListener(new RemoteConnectionDataListener() {					
 			@Override
 			public void dataRecieved(RemoteChannel channel, String data) {
-				Notification.show(data);				
+				messages.setValue(messages.getValue()+channel.getId()+" >> "+data+"\n");
 			}
 		});
 		
-		final TextField connectTo = new TextField();
-		connectTo.setImmediate(true);
-		vl.addComponent(connectTo);
+		// Listen for incoming connections
+		peer.addIncomingConnectionListener(new IncomingChannelConnectionListener() {
+			
+			@Override
+			public void connected(RemoteChannel channel) {
+				Notification.show(channel.getId()+" is connected.", Type.TRAY_NOTIFICATION);
+			}
+		});
 		
+		// Listen for when signalling server is connected
+		peer.addConnectedListener(new ConnectedListener() {
+			
+			@Override
+			public void connected() {
+				Notification.show("Connection establised.", Type.TRAY_NOTIFICATION);				
+			}
+		});		
+	}
+	
+	private void buildUI(){
+		FormLayout vl = new FormLayout();
+		setContent(vl);
+		
+		// Our id
+		Label myId = new Label(peer.getId());
+		myId.setCaption("My id: ");
+		vl.addComponent(myId);
+		
+		// Remote id
+		final TextField remoteId = new TextField();
+		remoteId.setWidth("100%");
+		NativeButton connectToRemote = new NativeButton("Connect", new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(final ClickEvent event) {
+				final RemoteChannel channel = peer.openChannel(remoteId.getValue());
+				channel.addConnectedListener(new ConnectedListener() {
+					
+					@Override
+					public void connected() {
+						remoteId.setReadOnly(true);
+						event.getButton().setVisible(false);
+						Notification.show("Connected to "+channel.getId(), Type.TRAY_NOTIFICATION);				
+					}
+				});
+			}
+		});
+		
+		HorizontalLayout hl = new HorizontalLayout(remoteId, connectToRemote);
+		hl.setExpandRatio(remoteId, 1);
+		hl.setWidth("100%");
+		hl.setCaption("Remote id: ");
+		vl.addComponent(hl);
+		
+		// Message display where messages are displayed
+		messages = new TextArea();
+		messages.setWidth("100%");
+		vl.addComponent(messages);
+		
+		// Message field
 		final TextField message = new TextField();
-		message.setImmediate(true);
-		vl.addComponent(message);
-		
-		NativeButton connect = new NativeButton("Connect and send");
-		connect.addClickListener(new ClickListener() {
+		message.setWidth("100%");
+		NativeButton send = new NativeButton("Send", new Button.ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				RemoteChannel channel = peer.openChannel(connectTo.getValue());
-				channel.send(message.getValue());					
+				
+				// Show message in message window
+				messages.setValue(messages.getValue()+peer.getId()+" >> "+message.getValue()+"\n");
+				
+				// Broadcast the message to all connected peers
+				peer.broadcast(message.getValue());
+				
+				message.setValue("");
 			}
 		});
-		vl.addComponent(connect);
+		
+		hl = new HorizontalLayout(message, send);
+		hl.setExpandRatio(message, 1);
+		hl.setWidth("100%");
+		hl.setCaption("Send message: ");
+		vl.addComponent(hl);
 	}
+	
+	
+	
 }
