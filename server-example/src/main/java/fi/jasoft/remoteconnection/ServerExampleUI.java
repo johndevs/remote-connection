@@ -15,24 +15,19 @@
 */
 package fi.jasoft.remoteconnection;
 
-import java.util.UUID;
-
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.ClientConnector.DetachEvent;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.annotations.Theme;
 
 import fi.jasoft.remoteconnection.shared.ConnectedListener;
 import fi.jasoft.remoteconnection.shared.IncomingChannelConnectionListener;
@@ -46,6 +41,8 @@ public class ServerExampleUI extends UI{
 	private RemoteConnection peer;
 	
 	private TextArea messages;
+	
+	private Label myId;
 	
 	protected void init(VaadinRequest request) {
 		
@@ -61,12 +58,9 @@ public class ServerExampleUI extends UI{
 	}
 	
 	private void initConnection(){
-		
-		// Create a random unique id for our chat user
-		final String id = UUID.randomUUID().toString();
-		
+				
 		// Create a connection
-		peer = ServerRemoteConnection.register(this, id);
+		peer = ServerRemoteConnection.register(this);
 		
 		// Connect to pairing server
 		peer.connect();
@@ -92,7 +86,8 @@ public class ServerExampleUI extends UI{
 		peer.addConnectedListener(new ConnectedListener() {
 			
 			@Override
-			public void connected() {
+			public void connected(String peerId) {
+				myId.setValue(peerId);
 				Notification.show("Connection establised.", Type.TRAY_NOTIFICATION);				
 			}
 		});		
@@ -103,8 +98,8 @@ public class ServerExampleUI extends UI{
 		setContent(vl);
 		
 		// Our id
-		Label myId = new Label(peer.getId());
-		myId.setCaption("My id: ");
+		myId = new Label("Connecting...");
+		myId.setCaption("My id:");
 		vl.addComponent(myId);
 		
 		// Remote id
@@ -118,10 +113,10 @@ public class ServerExampleUI extends UI{
 				channel.addConnectedListener(new ConnectedListener() {
 					
 					@Override
-					public void connected() {
+					public void connected(String channelId) {
 						remoteId.setReadOnly(true);
 						event.getButton().setVisible(false);
-						Notification.show("Connected to "+channel.getId(), Type.TRAY_NOTIFICATION);				
+						Notification.show("Connected to "+channelId, Type.TRAY_NOTIFICATION);				
 					}
 				});
 			}

@@ -25,7 +25,7 @@ public interface RemoteConnectionServerRPC extends ServerRpc {
 	
 	public void channelConnected(String id);
 		
-	public void connected();
+	public void peerConnected(String id);
 	
 	public void error(String reason);
 

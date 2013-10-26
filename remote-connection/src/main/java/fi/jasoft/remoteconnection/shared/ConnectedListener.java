@@ -2,5 +2,5 @@ package fi.jasoft.remoteconnection.shared;
 
 public interface ConnectedListener {
 
-	void connected();
+	void connected(String id);
 }

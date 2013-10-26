@@ -39,8 +39,8 @@ public class TextChatWidget extends Composite {
         
     private RemoteConnection peer;
     
-    String id = String.valueOf((((Math.random() * Long.MAX_VALUE))));
-        
+    private TextBox myid;
+            
     public TextChatWidget() {
     	buildUI();
     }
@@ -48,10 +48,19 @@ public class TextChatWidget extends Composite {
     private void initConnection() {
     	    	
     	// Create a new remote connection
-    	peer = ClientRemoteConnection.register(id);
+    	peer = ClientRemoteConnection.register();
     	
     	// Connect to signalling server
     	peer.connect();    	
+    	
+    	// Listen for connection
+    	peer.addConnectedListener(new ConnectedListener() {
+			
+			@Override
+			public void connected(String id) {
+				myid.setText(id);				
+			}
+		});
     	
     	// Listen for recieved messages
     	peer.addDataListener(new RemoteConnectionDataListener() {
@@ -67,10 +76,10 @@ public class TextChatWidget extends Composite {
     	VerticalPanel vl = new VerticalPanel();
 
     	// Our id
-    	TextBox myId = new TextBox();
-    	myId.setValue(id);
-    	myId.setReadOnly(true);
-    	vl.add(myId);
+    	myid = new TextBox();
+    	myid.setValue("Connecting...");
+    	myid.setReadOnly(true);
+    	vl.add(myid);
     	
     	// Remote id
     	final TextBox remoteId = new TextBox();
@@ -82,9 +91,9 @@ public class TextChatWidget extends Composite {
 				channel.addConnectedListener(new ConnectedListener() {
 					
 					@Override
-					public void connected() {
+					public void connected(String channelId) {
 						remoteId.setReadOnly(true);								
-						messages.setText(messages.getText()+"Connected to channel "+remoteId.getValue()+"\n");
+						messages.setText(messages.getText()+"Connected to channel "+channelId+"\n");
 					}
 				});				
 			}

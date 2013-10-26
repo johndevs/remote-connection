@@ -17,7 +17,6 @@ package fi.jasoft.remoteconnection;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.server.AbstractExtension;
@@ -57,10 +56,11 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		}
 
 		@Override
-		public void connected() {
+		public void peerConnected(String id) {
 			connected = true;		
+			getState(false).id = id;
 			for(ConnectedListener listener : connetedListeners) {
-				listener.connected();
+				listener.connected(id);
 			}
 		}
 
@@ -75,7 +75,7 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 
 		@Override
 		public void channelConnected(String id) {
-			getChannelById(id).setConnected(true);			
+			getChannelById(id).setConnected(true, id);			
 		}
 	};
 	
@@ -154,21 +154,10 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	/**
 	 * Returns the id of this remote connection. 
 	 */
-	public String getId(){
-		if(getState().id == null) {
-			getState().id = UUID.randomUUID().toString();
-		}
+	public String getId(){		
 		return getState().id;
 	}
-	
-	
-	@Override
-	public void beforeClientResponse(boolean initial) {
-		if(getState().id == null) {
-			getState().id = UUID.randomUUID().toString();
-		}
-	}
-	
+			
 	/**
 	 * Creates a channel between this and another remote connection
 	 * 
@@ -193,6 +182,11 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	@Override
 	protected RemoteConnectionState getState() {		
 		return (RemoteConnectionState) super.getState();
+	}
+	
+	@Override
+	protected RemoteConnectionState getState(boolean markAsDirty) {		
+		return (RemoteConnectionState) super.getState(markAsDirty);
 	}
 	
 	/**
@@ -281,11 +275,11 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 			}			
 		}
 		
-		private void setConnected(boolean connected){
+		private void setConnected(boolean connected, String channelId){
 			this.connected = connected;
 			if(connected){
 				for(ConnectedListener listener : connectedListeners){
-					listener.connected();
+					listener.connected(channelId);
 				}
 			}
 		}

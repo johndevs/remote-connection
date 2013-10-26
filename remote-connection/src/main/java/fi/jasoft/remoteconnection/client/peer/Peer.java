@@ -32,8 +32,25 @@ public class Peer extends JavaScriptObject {
 	 	}); 		 	
 	}-*/;
 	
+	public static native final Peer create(PeerOptions options)
+	/*-{	    
+	  	var cfg = JSON.parse(options.@fi.jasoft.remoteconnection.client.peer.PeerOptions::config);
+	 	return $wnd.Peer({
+	 		key: options.@fi.jasoft.remoteconnection.client.peer.PeerOptions::key, 
+	 		host: options.@fi.jasoft.remoteconnection.client.peer.PeerOptions::host,
+	 		port: options.@fi.jasoft.remoteconnection.client.peer.PeerOptions::port,
+	 		secure: options.@fi.jasoft.remoteconnection.client.peer.PeerOptions::secure,
+	 		config: cfg,
+	 		debug: options.@fi.jasoft.remoteconnection.client.peer.PeerOptions::debug
+	 	}); 		 	
+	}-*/;
+	
 	public static final Peer create(String id){
 		return create(id, new PeerOptions());
+	}
+	
+	public static final Peer create(){
+		return create(new PeerOptions());
 	}
 	
 	protected Peer(){}

@@ -43,7 +43,11 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
     	super.init();
     	
     	// Create remote connection, peer.js will be registered by the @Javascript annotation
-    	connection = ClientRemoteConnection.register(getState().id, false);    	  
+    	if(getState().id == null){
+    		connection = ClientRemoteConnection.register(false);
+    	} else {
+    		connection = ClientRemoteConnection.register(getState().id, false);    	  
+    	}    	    	
     	
     	//Listen for incoming data
     	connection.addDataListener(new RemoteConnectionDataListener() {
@@ -66,8 +70,11 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
     	connection.addConnectedListener(new ConnectedListener() {
 			
 			@Override
-			public void connected() {
-				rpc.connected();
+			public void connected(String peerId) {
+				if(peerId == null){
+					throw new IllegalStateException("Peer id cannot be null");
+				}				
+				rpc.peerConnected(peerId);
 			}
 		});
     	
@@ -93,7 +100,7 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
 				channel.addConnectedListener(new ConnectedListener() {
 					
 					@Override
-					public void connected() {
+					public void connected(String channelId) {
 						rpc.channelConnected(channelId);
 					}
 				});

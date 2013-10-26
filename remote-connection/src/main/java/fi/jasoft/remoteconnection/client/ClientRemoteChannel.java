@@ -77,7 +77,7 @@ public class ClientRemoteChannel implements RemoteChannel {
 				ClientRemoteConnection.getLogger().info("Connected to channel "+getId());			;
 				flushMessageQueue();				
 				for(ConnectedListener listener : connectedListeners) {
-					listener.connected();
+					listener.connected(getId());
 				}
 			}				
 		});
