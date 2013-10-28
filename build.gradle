@@ -1,4 +1,7 @@
-version  = 'development'
+allprojects {
+	group='fi.jasoft'
+	version = project.hasProperty('BUILD_VERSION') ? getProperty('BUILD_VERSION') : 'development';
+}
 
 subprojects {
 	apply from: 'http://plugins.jasoft.fi/vaadin.plugin'
@@ -12,7 +15,7 @@ project(':remote-connection'){
 		widgetset 'fi.jasoft.remoteconnection.RemoteConnectionWidgetset'
 		addon {
 			author 'John Ahlroos'
-			license 'Apache License'
+			license 'Apache 2.0'
 			title 'RemoteConnection'
 		}
 	}
