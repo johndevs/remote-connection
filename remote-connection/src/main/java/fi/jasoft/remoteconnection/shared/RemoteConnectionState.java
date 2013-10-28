@@ -17,7 +17,14 @@ package fi.jasoft.remoteconnection.shared;
 
 import com.vaadin.shared.communication.SharedState;
 
+/**
+ * Shared state for the remote connection server side implementation
+ * 
+ * @author John Ahlroos
+ */
+@SuppressWarnings("serial")
 public class RemoteConnectionState extends SharedState {
 
+	// Unique peer id for the Remote Connection
 	public String id;	
 }

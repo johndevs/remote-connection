@@ -15,31 +15,97 @@
 */
 package fi.jasoft.remoteconnection.shared;
 
+/**
+ * A connection for communicating remotely over WebRTC with other remotely connected remote connections.
+ * 
+ * @author John Ahlroos
+ */
 public interface RemoteConnection {
 
-	public String getId();
+	/**
+	 * Returns the unique id of the peer.
+	 */
+	String getId();
 	
-	public RemoteChannel openChannel(String endpointPeerId);
+	/**
+	 * Set the unique id 
+	 * @param peerId
+	 */
+	void setId(String peerId);
 	
-	public void addDataListener(RemoteConnectionDataListener listener);
+	/**
+	 * Opens a remote channel to another remote connection
+	 * 
+	 * @param endpointPeerId
+	 * 		The id of the other remote connection we should connect to
+	 * @return
+	 * 		Return a channel to the other remote connection with which we can send and recieve data
+	 */
+	RemoteChannel openChannel(String endpointPeerId);
+	
+	/**
+	 * Adds a listener for receiving data from connected channels
+	 * 
+	 * @param listener
+	 * 		The listener to attach
+	 */
+	void addDataListener(RemoteConnectionDataListener listener);
 
-	public void addIncomingConnectionListener(IncomingChannelConnectionListener listener);
+	/**
+	 * Add a listener for listening for incomming connections from other Remote connections
+	 * 
+	 * @param listener
+	 * 		The listener to add
+	 */
+	void addIncomingConnectionListener(IncomingChannelConnectionListener listener);
 	
-	public void addConnectedListener(ConnectedListener listener);
+	/**
+	 * Add a listener for listening to when the remote connection is connected to the signalling server.
+	 * 
+	 * @param listener
+	 * 		The listener to add
+	 */
+	void addConnectedListener(ConnectedListener listener);
 	
-	public void broadcast(String message);
+	/**
+	 * Broadcast a message vi all connected channels
+	 * 
+	 * @param message
+	 * 		The message to broadcast
+	 */
+	void broadcast(String message);
 	
-	public RemoteChannel getChannel(String endpointPeerId);
+	/**
+	 * Get a channel by its endpoint id
+	 * 
+	 * @param endpointPeerId
+	 * 		The id of the remotely connected channel
+	 * @return
+	 * 		Return a channel to the other remote connection with which we can send and recieve data
+	 */
+	RemoteChannel getChannel(String endpointPeerId);
 	
-	public void terminate();
+	/**
+	 * Terminate the connection to the signalling server. Also terminates any connected channels.
+	 */
+	void terminate();
 	
-	public void connect();
+	/**
+	 * Connect to the signalling server.
+	 */
+	void connect();
 	
+	/**
+	 * Are we connected to the signalling server
+	 */
 	public boolean isConnected();
 	
-	public void setId(String peerId);
-	
+	/**
+	 * Sets a handler that gets called when we receive an error on the connection.
+	 * 
+	 * @param handler
+	 * 		The handler to call when an error occurs
+	 */
 	public void setErrorHandler(RemoteConnectionErrorHandler handler);
-	
 	
 }

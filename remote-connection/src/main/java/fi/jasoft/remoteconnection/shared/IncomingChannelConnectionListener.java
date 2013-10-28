@@ -15,7 +15,18 @@
 */
 package fi.jasoft.remoteconnection.shared;
 
+/**
+ * Listener for listening to incoming {@link RemoteChannel}'s from external {@link RemoteConnection}'s
+ * 
+ * @author John Ahlroos
+ */
 public interface IncomingChannelConnectionListener {
 
+	/**
+	 * Invoked when an external {@link RemoteConnection} has established a channel
+	 * 
+	 * @param channel
+	 * 		The channel that got established between the {@link RemoteConnection}'s
+	 */
 	void connected(RemoteChannel channel);
 }

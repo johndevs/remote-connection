@@ -15,6 +15,11 @@
 */
 package fi.jasoft.remoteconnection.shared;
 
+/**
+ * Error triggered when something goes wrong connecting to the signalling server.
+ * 
+ * @author John Ahlroos
+ */
 public enum ConnectionError {
 	BROWSER_INCOMPATIBLE("browser-incompatible"),
 	INVALID_KEY("invalid-id"),

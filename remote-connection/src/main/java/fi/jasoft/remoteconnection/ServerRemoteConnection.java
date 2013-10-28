@@ -33,8 +33,66 @@ import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionErrorHandler;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionState;
 
+/**
+ * Server implementation for {@link RemoteConnection}
+ * 
+ * @author John Ahlroos
+ */
+@SuppressWarnings("serial")
 @JavaScript("peer.min.js")
 public class ServerRemoteConnection extends AbstractExtension implements RemoteConnection {
+	
+	/**
+	 * A channel between two remote connections
+	 *
+	 */
+	public class ServerRemoteChannel implements RemoteChannel{
+
+		private final String id;
+		
+		private boolean connected = false;
+		
+		private List<ConnectedListener> connectedListeners = new LinkedList<ConnectedListener>();
+		
+		@Override
+		public void send(String message){
+			getRpcProxy(RemoteConnectionClientRPC.class).sendMessage(id, message);
+		}	
+
+		@Override
+		public String getId() {
+			return id;
+		}
+		
+		@Override
+		public boolean isConnected() {			
+			return connected;
+		}
+
+		@Override
+		public void addConnectedListener(ConnectedListener listener) {
+			connectedListeners.add(listener);
+		}
+		
+		private ServerRemoteChannel(String id){
+			this.id = id;			
+		}
+				
+		private void messageRecieved(String message) {
+			for(RemoteConnectionDataListener listener : listeners){
+				listener.dataRecieved(this, message);
+			}			
+		}
+		
+		private void setConnected(boolean connected, String channelId){
+			this.connected = connected;
+			if(connected){
+				for(ConnectedListener listener : connectedListeners){
+					listener.connected(channelId);
+				}
+			}
+		}
+	}
 	
 	/*
 	 * RPC for making communication from client -> server
@@ -91,32 +149,6 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	
 	private RemoteConnectionErrorHandler errorHandler;
 		
-	/**
-	 * Default construction
-	 * 
-	 * @param ui
-	 * 		The UI the connection should be attached to
-	 */
-	private ServerRemoteConnection(UI ui){
-		super.extend(ui);
-		registerRpc(rpc);
-	}
-	
-	/**
-	 * Returns, or creates a new, channel by using its remote peer id
-	 * 
-	 * @param id
-	 * 		The peer id of the channel endpoint
-	 * @return
-	 */
-	private ServerRemoteChannel getChannelById(String id){
-		for(ServerRemoteChannel channel : channels){
-			if(channel.getId().equals(id)){
-				return channel;
-			}
-		}		
-		return null;
-	}
 	
 	/**
 	 * Attaches a remote connection to an UI
@@ -151,19 +183,12 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		getState().id = peerId;		
 	}
 	
-	/**
-	 * Returns the id of this remote connection. 
-	 */
+	@Override
 	public String getId(){		
 		return getState().id;
 	}
 			
-	/**
-	 * Creates a channel between this and another remote connection
-	 * 
-	 * @param endpointPeerId
-	 * 		The id of the other remote connection
-	 */
+	@Override
 	public RemoteChannel openChannel(String endpointPeerId) {
 		RemoteChannel channel = getChannel(endpointPeerId);
 		if(channel != null){
@@ -189,16 +214,12 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		return (RemoteConnectionState) super.getState(markAsDirty);
 	}
 	
-	/**
-	 * Adds a new data listener for listing to messages
-	 * 
-	 * @param listener
-	 * 		The listener to attach
-	 */
+	@Override
 	public void addDataListener(RemoteConnectionDataListener listener) {
 		listeners.add(listener);
 	}
 	
+	@Override
 	public void addIncomingConnectionListener(IncomingChannelConnectionListener listener) {
 		incomingListeners.add(listener);
 	}
@@ -245,55 +266,32 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		connetedListeners.add(listener);	
 	}
 	
+	
+
 	/**
-	 * A channel between two remote connections
-	 *
+	 * Default construction
+	 * 
+	 * @param ui
+	 * 		The UI the connection should be attached to
 	 */
-	public class ServerRemoteChannel implements RemoteChannel{
-
-		private final String id;
-		
-		private boolean connected = false;
-		
-		private List<ConnectedListener> connectedListeners = new LinkedList<ConnectedListener>();
-		
-		public ServerRemoteChannel(String id){
-			this.id = id;			
-		}
-		
-		public void send(String message){
-			getRpcProxy(RemoteConnectionClientRPC.class).sendMessage(id, message);
-		}	
-
-		public String getId() {
-			return id;
-		}
-		
-		private void messageRecieved(String message) {
-			for(RemoteConnectionDataListener listener : listeners){
-				listener.dataRecieved(this, message);
-			}			
-		}
-		
-		private void setConnected(boolean connected, String channelId){
-			this.connected = connected;
-			if(connected){
-				for(ConnectedListener listener : connectedListeners){
-					listener.connected(channelId);
-				}
-			}
-		}
-
-		@Override
-		public boolean isConnected() {			
-			return connected;
-		}
-
-		@Override
-		public void addConnectedListener(ConnectedListener listener) {
-			connectedListeners.add(listener);
-		}
+	private ServerRemoteConnection(UI ui){
+		super.extend(ui);
+		registerRpc(rpc);
 	}
-
-
+	
+	/**
+	 * Returns, or creates a new, channel by using its remote peer id
+	 * 
+	 * @param id
+	 * 		The peer id of the channel endpoint
+	 * @return
+	 */
+	private ServerRemoteChannel getChannelById(String id){
+		for(ServerRemoteChannel channel : channels){
+			if(channel.getId().equals(id)){
+				return channel;
+			}
+		}		
+		return null;
+	}
 }

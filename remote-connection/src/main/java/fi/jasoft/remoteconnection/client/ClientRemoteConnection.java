@@ -36,7 +36,116 @@ import fi.jasoft.remoteconnection.shared.RemoteConnection;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionErrorHandler;
 
+/**
+ * Client side implementation of {@link RemoteConnection}. 
+ * Use {@link ClientRemoteConnection#register()} to get a instance.
+ * 
+ * @author John Ahlroos
+ */
 public class ClientRemoteConnection implements RemoteConnection {
+	
+	/**
+	 * Client side implementation of RemoteConnection. Use {@link ClientRemoteConnection#register()} to get an instance.
+	 * 
+	 * @author John Ahlroos
+	 */
+	public class ClientRemoteChannel implements RemoteChannel {
+
+		private final String id;
+		
+		private DataConnection connection;
+				
+		private List<String> messageQueue = new LinkedList<String>();
+
+		private final List<RemoteConnectionDataListener> listeners = new LinkedList<RemoteConnectionDataListener>();
+		
+		private final List<ConnectedListener> connectedListeners = new LinkedList<ConnectedListener>();
+		
+		@Override
+		public void send(String message) {		
+			if(isConnected()){
+				ClientRemoteConnection.getLogger().info("Sending message to "+id);
+				connection.send(message);
+			} else {
+				ClientRemoteConnection.getLogger().warning("No connection to channel endpoint. Queueing message for later.");
+				messageQueue.add(message);
+			}			
+		}
+
+		@Override
+		public String getId() {
+			return id;
+		}		
+		
+		@Override
+		public boolean isConnected() {			
+			return connection != null && connection.isOpen();
+		}
+		
+		@Override
+		public void addConnectedListener(ConnectedListener listener) {
+			connectedListeners.add(listener);
+		}
+		
+		/**
+		 * Default constructor
+		 * @param id
+		 */
+		private ClientRemoteChannel(String id){
+			this.id = id;					
+		}						
+
+		/**
+		 * Adds a data listener to the channel
+		 * 
+		 * @param listener
+		 * 		The listener to add
+		 */
+		private void addDataListener(RemoteConnectionDataListener listener) {
+			listeners.add(listener);
+		}
+					
+		private void setConnection(final DataConnection con){
+			if(con == null){
+				throw new IllegalArgumentException("Connection cannot be null");
+			}
+					
+			this.connection = con;
+			
+			ClientRemoteConnection.getLogger().info("Opening channel connection to "+connection.getPeerId());
+			connection.addListener("open", new PeerListener() {
+
+				@Override
+				public void execute() {
+					ClientRemoteConnection.getLogger().info("Connected to channel "+getId());			;
+					flushMessageQueue();				
+					for(ConnectedListener listener : connectedListeners) {
+						listener.connected(getId());
+					}
+				}				
+			});
+			
+			connection.addDataListener(new StringPeerListener() {
+				
+				@Override
+				public void execute(String str) {						
+					messageRecieved(str);
+				}
+			});		
+		}
+		
+		private void flushMessageQueue(){
+			while(!messageQueue.isEmpty()){
+				this.send(messageQueue.remove(0));
+			}			
+		}	
+
+		private void messageRecieved(String message) {		
+			for(RemoteConnectionDataListener listener : listeners){			
+				listener.dataRecieved(this, message);
+			}		
+		}
+	}
 	
 	private String id;
 		
@@ -141,20 +250,12 @@ public class ClientRemoteConnection implements RemoteConnection {
 		return typeof($wnd.Peer) === 'function'; 
 	}-*/;
 	
-	/**
-	 * Returns the unique peer id of this remote connection. 
-	 * 
-	 */
+	@Override
 	public String getId(){
 		return id;
 	}
 	
-	/**
-	 * Sets the id of the connection
-	 * 
-	 * @param id
-	 * 		The id to set
-	 */
+	@Override
 	public void setId(String id){	
 		this.id = id;	
 	}
@@ -308,9 +409,7 @@ public class ClientRemoteConnection implements RemoteConnection {
 		connectedToSignallingServer = false;
 	}
 	
-	/**
-	 * Disconnects from the signalling srever and closes all channels
-	 */
+	@Override
 	public void terminate(){
 		disconnect();
 		peer.destroy();
@@ -343,13 +442,7 @@ public class ClientRemoteConnection implements RemoteConnection {
 		return channel;
 	}
 			
-	/**
-	 * Open a channel to another remote host
-	 * 
-	 * @param endpointPeerId
-	 * 		The id of the remote peer
-	 * @return
-	 */
+	@Override
 	public RemoteChannel openChannel(String endpointPeerId) {
 		if(endpointPeerId == null){
 			throw new IllegalArgumentException("Cannot connect to null channel");
@@ -381,13 +474,7 @@ public class ClientRemoteConnection implements RemoteConnection {
 		}
 	}
 	
-	/**
-	 * Returns a channel
-	 * 
-	 * @param channelEndpointId
-	 * 		The endpoint of the channel
-	 * @return
-	 */
+	@Override
 	public RemoteChannel getChannel(String channelEndpointId) {		
 		RemoteChannel channel = getChannelById(channelEndpointId);
 		if(channel == null){
@@ -401,24 +488,14 @@ public class ClientRemoteConnection implements RemoteConnection {
 		return channel;
 	}
 		
-	/**
-	 * Broadcase a message to all connected channels
-	 * 
-	 * @param message
-	 * 		The message to broadcast
-	 */
+	@Override
 	public void broadcast(String message) {		
 		for(RemoteChannel channel: connectedChannels){
 			channel.send(message);
 		}	
 	}
 	
-	/**
-	 * Sets the error handler that is triggered when the connection gets an error
-	 * 
-	 * @param handler
-	 * 		The handler to recieve the error
-	 */
+	@Override
 	public void setErrorHandler(RemoteConnectionErrorHandler handler){
 		this.errorHandler = handler;
 	}
@@ -439,9 +516,7 @@ public class ClientRemoteConnection implements RemoteConnection {
 		return null;
 	}
 	
-	/**
-	 * Is the connection connected to the signalling server
-	 */
+	@Override
 	public boolean isConnected(){
 		return peer != null;
 	}

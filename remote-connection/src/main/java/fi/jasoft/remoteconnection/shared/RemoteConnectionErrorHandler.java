@@ -15,8 +15,21 @@
 */
 package fi.jasoft.remoteconnection.shared;
 
+/**
+ * Listener for listening to errors connecting to the signalling server.
+ * 
+ * @author John Ahlroos
+ */
 public interface RemoteConnectionErrorHandler {
 
+	/**
+	 * Triggered when a error occurs connecting to signalling server
+	 * 
+	 * @param error
+	 * 		The error that occurred
+	 * @return
+	 * 		True if the connection to the signalling server should be terminated.
+	 */
 	boolean onConnectionError(ConnectionError error);
 	
 }
