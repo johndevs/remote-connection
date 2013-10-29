@@ -44,6 +44,7 @@ project(':remote-connection'){
 project(':server-example'){
 	dependencies {
 		compile project(':remote-connection')
+		compile project(path: ':remote-connection', configuration: 'archives')
 	}
 
 	vaadin {
@@ -56,7 +57,8 @@ project(':server-example'){
 
 project(':client-example'){
         dependencies {
-                compile project(':remote-connection')
+		compile project(path: ':remote-connection')
+		compile project(path: ':remote-connection', configuration: 'archives') 
         }       
         
         vaadin {
