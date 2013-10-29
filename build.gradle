@@ -19,8 +19,26 @@ project(':remote-connection'){
 			title 'RemoteConnection'
 		}
 	}
+	
+	task sourcesJar(type: Jar, dependsOn: classes) {
+               	classifier = 'sources'
+               	from sourceSets.main.allSource
+        }
 
-	jar{ from sourceSets.main.allJava }
+	task javadocJar(type: Jar, dependsOn: javadoc) {
+                classifier = 'javadoc'
+               	from javadoc.destinationDir
+        }
+
+        artifacts {
+               	archives sourcesJar
+               	archives javadocJar
+        }
+
+	jar{
+		dependsOn project.sourcesJar,project.javadocJar
+	}
+		
 }
 
 project(':server-example'){
