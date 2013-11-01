@@ -28,6 +28,7 @@ import fi.jasoft.remoteconnection.client.ClientRemoteConnection;
 import fi.jasoft.remoteconnection.shared.ConnectedListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
+import fi.jasoft.remoteconnection.shared.RemoteConnectionConfiguration;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
 
 /**
@@ -46,7 +47,7 @@ public class TextChatWidget extends Composite {
     }
     
     private void initConnection() {
-    	    	
+    	
     	// Create a new remote connection
     	peer = ClientRemoteConnection.register();
     	
@@ -120,7 +121,7 @@ public class TextChatWidget extends Composite {
 			public void onClick(ClickEvent event) {
 
 				// Show message in message window
-				messages.setValue(messages.getValue()+peer.getId()+" >> "+message.getValue()+"\n");
+				messages.setValue(messages.getValue()+peer.getConfiguration().getId()+" >> "+message.getValue()+"\n");
 				
 				// Broadcast the message to all connected peers
 				peer.broadcast(message.getValue());

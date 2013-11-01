@@ -15,6 +15,8 @@
 */
 package fi.jasoft.remoteconnection;
 
+import java.util.UUID;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
@@ -61,6 +63,8 @@ public class ServerExampleUI extends UI{
 				
 		// Create a connection
 		peer = ServerRemoteConnection.register(this);
+		
+		peer.getConfiguration().setId(UUID.randomUUID().toString());
 		
 		// Connect to pairing server
 		peer.connect();
@@ -142,7 +146,7 @@ public class ServerExampleUI extends UI{
 			public void buttonClick(ClickEvent event) {
 				
 				// Show message in message window
-				messages.setValue(messages.getValue()+peer.getId()+" >> "+message.getValue()+"\n");
+				messages.setValue(messages.getValue()+peer.getConfiguration().getId()+" >> "+message.getValue()+"\n");
 				
 				// Broadcast the message to all connected peers
 				peer.broadcast(message.getValue());

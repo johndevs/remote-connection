@@ -24,7 +24,6 @@ import com.vaadin.shared.communication.SharedState;
  */
 @SuppressWarnings("serial")
 public class RemoteConnectionState extends SharedState {
-
-	// Unique peer id for the Remote Connection
-	public String id;	
+	
+	public RemoteConnectionConfiguration configuration = new RemoteConnectionConfiguration();
 }

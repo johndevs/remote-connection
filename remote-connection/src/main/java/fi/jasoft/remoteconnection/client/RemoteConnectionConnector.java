@@ -27,6 +27,7 @@ import fi.jasoft.remoteconnection.shared.ConnectionError;
 import fi.jasoft.remoteconnection.shared.IncomingChannelConnectionListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
+import fi.jasoft.remoteconnection.shared.RemoteConnectionConfiguration;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionErrorHandler;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionState;
@@ -37,17 +38,10 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
 	private RemoteConnection connection;
 	
 	private RemoteConnectionServerRPC rpc = RpcProxy.create(RemoteConnectionServerRPC.class, this);
-	    
-    @Override
-    protected void init() {    
-    	super.init();
-    	
-    	// Create remote connection, peer.js will be registered by the @Javascript annotation
-    	if(getState().id == null){
-    		connection = ClientRemoteConnection.register(false);
-    	} else {
-    		connection = ClientRemoteConnection.register(getState().id, false);    	  
-    	}    	    	
+    
+    private void createConnectionFromConfiguration(RemoteConnectionConfiguration conf) {
+
+    	connection = ClientRemoteConnection.register(conf);
     	
     	//Listen for incoming data
     	connection.addDataListener(new RemoteConnectionDataListener() {
@@ -116,13 +110,13 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
 				connection.connect();				
 			}
 		});
-    }    
+    }
     
     @Override
     public void onStateChanged(StateChangeEvent stateChangeEvent) {    	
     	super.onStateChanged(stateChangeEvent);
-    	if(stateChangeEvent.hasPropertyChanged("id")){
-    		connection.setId(getState().id);    	
+    	if(stateChangeEvent.hasPropertyChanged("configuration")){
+    		createConnectionFromConfiguration(getState().configuration);
     	}
     }
             

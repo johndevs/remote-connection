@@ -29,7 +29,8 @@ public enum ConnectionError {
 	SERVER_DISCONNECTED("server-disconnected"),
 	SERVER_ERROR("server-error"),
 	SOCKET_ERROR("socket-error"),
-	SOCKET_CLOSED("socket-closed");
+	SOCKET_CLOSED("socket-closed"),
+	TIMEOUT("socket-timeout");
 			
 	private String nativeError;
 	

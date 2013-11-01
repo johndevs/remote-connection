@@ -21,17 +21,6 @@ package fi.jasoft.remoteconnection.shared;
  * @author John Ahlroos
  */
 public interface RemoteConnection {
-
-	/**
-	 * Returns the unique id of the peer.
-	 */
-	String getId();
-	
-	/**
-	 * Set the unique id 
-	 * @param peerId
-	 */
-	void setId(String peerId);
 	
 	/**
 	 * Opens a remote channel to another remote connection
@@ -107,5 +96,13 @@ public interface RemoteConnection {
 	 * 		The handler to call when an error occurs
 	 */
 	public void setErrorHandler(RemoteConnectionErrorHandler handler);
+	
+	/**
+	 * Set the configuration for the connection
+	 * 
+	 * @param configuration
+	 * 		The configuration for the connection. Should not be null.
+	 */
+	public RemoteConnectionConfiguration getConfiguration();
 	
 }

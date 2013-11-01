@@ -17,6 +17,7 @@ package fi.jasoft.remoteconnection;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.vaadin.annotations.JavaScript;
 import com.vaadin.server.AbstractExtension;
@@ -29,6 +30,7 @@ import fi.jasoft.remoteconnection.shared.ConnectionError;
 import fi.jasoft.remoteconnection.shared.IncomingChannelConnectionListener;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
+import fi.jasoft.remoteconnection.shared.RemoteConnectionConfiguration;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionErrorHandler;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionState;
@@ -116,7 +118,7 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		@Override
 		public void peerConnected(String id) {
 			connected = true;		
-			getState(false).id = id;
+			getState(false).configuration.setId(id);
 			for(ConnectedListener listener : connetedListeners) {
 				listener.connected(id);
 			}
@@ -148,7 +150,6 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	private boolean connected = false;
 	
 	private RemoteConnectionErrorHandler errorHandler;
-		
 	
 	/**
 	 * Attaches a remote connection to an UI
@@ -172,20 +173,10 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	 * @return
 	 *		Returns the connection to communicate with remote channels with
 	 */
-	public static RemoteConnection register(UI ui, String peerId){
+	public static RemoteConnection register(UI ui, RemoteConnectionConfiguration configuration){
 		ServerRemoteConnection peer = register(ui);
-		peer.getState().id = peerId;
+		peer.getState().configuration = configuration;
 		return peer;
-	}
-
-	@Override
-	public void setId(String peerId) {
-		getState().id = peerId;		
-	}
-	
-	@Override
-	public String getId(){		
-		return getState().id;
 	}
 			
 	@Override
@@ -247,7 +238,17 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	}
 
 	@Override
-	public void connect() {
+	public void connect() {	
+		if(getState(false).configuration.getKey().equals(RemoteConnectionConfiguration.DEVELOPMENT_PEER_JS_KEY)){
+			getLogger().warning("You are using the development key of RemoteConnection "
+					+ "with a very limited amount of connections shared among all "
+					+ "RemoteConnection users. You are strongly encoraged to apply " 
+					+ "for your own developer key at http://peerjs.com/peerserver or "
+					+ "run your own server which can be downloaded from https://github.com/peers/peerjs-server. "
+					+ "You can supply your own peer server details through the RemoteConnection.getConfiguration() "
+					+ "option. Thank you.");
+		}
+		
 		getRpcProxy(RemoteConnectionClientRPC.class).connect();		
 	}
 
@@ -265,8 +266,6 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	public void addConnectedListener(ConnectedListener listener) {
 		connetedListeners.add(listener);	
 	}
-	
-	
 
 	/**
 	 * Default construction
@@ -277,6 +276,9 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 	private ServerRemoteConnection(UI ui){
 		super.extend(ui);
 		registerRpc(rpc);
+		
+		// Use Vaadin's script injection
+		getState().configuration.setScriptInjected(false);
 	}
 	
 	/**
@@ -293,5 +295,14 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 			}
 		}		
 		return null;
+	}
+	
+	private Logger getLogger(){
+		return Logger.getLogger(ServerRemoteConnection.class.getCanonicalName());
+	}
+
+	@Override
+	public RemoteConnectionConfiguration getConfiguration() {
+		return getState().configuration;
 	}
 }
