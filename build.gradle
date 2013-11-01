@@ -5,12 +5,13 @@ allprojects {
 
 subprojects {
 	apply from: 'http://plugins.jasoft.fi/vaadin.plugin'
-	apply plugin: 'eclipse'
+	apply plugin: 'eclipse-wtp'
 	sourceCompatibility = 1.6
 	targetCompatibility = 1.6
 }
 
 project(':remote-connection'){
+
 	vaadin {
 		widgetset 'fi.jasoft.remoteconnection.RemoteConnectionWidgetset'
 		addon {
@@ -37,6 +38,9 @@ project(':remote-connection'){
 
 	jar{
 		dependsOn project.sourcesJar,project.javadocJar
+		
+		// Include source in jar (since we cannot publish two jars in directory)
+		from sourceSets.main.allJava
 	}
 		
 }
