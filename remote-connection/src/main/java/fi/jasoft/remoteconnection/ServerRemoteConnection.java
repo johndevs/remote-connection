@@ -127,7 +127,7 @@ public class ServerRemoteConnection extends AbstractExtension implements RemoteC
 		@Override
 		public void error(String reason) {
 			if(errorHandler != null){
-				errorHandler.onConnectionError(ConnectionError.get(reason));
+				errorHandler.onConnectionError(ConnectionError.get(reason), reason);
 			} else {
 				System.err.println("An error occurred when connecting ("+reason+")");
 			}

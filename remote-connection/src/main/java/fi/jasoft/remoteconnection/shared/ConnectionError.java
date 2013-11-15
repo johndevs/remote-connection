@@ -30,7 +30,9 @@ public enum ConnectionError {
 	SERVER_ERROR("server-error"),
 	SOCKET_ERROR("socket-error"),
 	SOCKET_CLOSED("socket-closed"),
-	TIMEOUT("socket-timeout");
+	TIMEOUT("socket-timeout"),
+	
+	CHANNEL_ERROR("channel-error");
 			
 	private String nativeError;
 	

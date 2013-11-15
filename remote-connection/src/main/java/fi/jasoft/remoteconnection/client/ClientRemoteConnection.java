@@ -22,8 +22,12 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.ScriptInjector;
+import com.google.gwt.dev.util.Util;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 
+import elemental.js.util.Json;
 import fi.jasoft.remoteconnection.client.peer.DataConnection;
 import fi.jasoft.remoteconnection.client.peer.ObjectPeerListener;
 import fi.jasoft.remoteconnection.client.peer.Peer;
@@ -382,10 +386,16 @@ public class ClientRemoteConnection implements RemoteConnection {
 	 * 		The error that was triggered
 	 */
 	protected void onError(PeerError error) {				
-		String msg = (error.getType() == null ? error.toSource() : error.getType().toString());
+		ConnectionError ce = error.getType();
+		String msg = (ce == null ? new JSONObject(error).toString() : ce.toString());
+		
+		if(ce == null) {
+			ce = ConnectionError.CHANNEL_ERROR;
+		}
+		
 		if(errorHandler != null){
-			getLogger().severe("Remote connection got error: "+msg);		
-			if(errorHandler.onConnectionError(error.getType())){
+			getLogger().severe("Remote connection got error: "+msg);
+			if(errorHandler.onConnectionError(ce, msg)){
 				terminate();		
 			};
 		} else {
@@ -424,6 +434,7 @@ public class ClientRemoteConnection implements RemoteConnection {
 	}	
 		
 	private ClientRemoteChannel connectToChannel(ClientRemoteChannel channel) {	
+		getLogger().info("Connecting to peer "+channel.getId());
 		DataConnection connection = peer.connect(channel.getId());
 		assert connection != null;
 		return connectToChannel(channel, connection);		
@@ -435,7 +446,7 @@ public class ClientRemoteConnection implements RemoteConnection {
 		for(RemoteConnectionDataListener listener : listeners){
 			channel.addDataListener(listener);
 		}	
-				
+		
 		connectedChannels.add(channel);
 		
 		return channel;
@@ -453,13 +464,15 @@ public class ClientRemoteConnection implements RemoteConnection {
 		}
 				
 		channel = new ClientRemoteChannel(endpointPeerId);		
+
+		getLogger().info("Created channel to "+endpointPeerId);
+		
 		if(connectedToSignallingServer){
 			 channel = connectToChannel(channel);
 		} else {
+			getLogger().warning("Not connected to signalling server, delaying channel connection to "+endpointPeerId);
 			pendingConnectionChannels.add(channel);
 		}
-		
-		getLogger().info("Created channel to "+endpointPeerId);
 		
 		return channel;
 	}	

@@ -17,6 +17,7 @@ package fi.jasoft.remoteconnection.client.textchat;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -26,10 +27,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import fi.jasoft.remoteconnection.client.ClientRemoteConnection;
 import fi.jasoft.remoteconnection.shared.ConnectedListener;
+import fi.jasoft.remoteconnection.shared.ConnectionError;
 import fi.jasoft.remoteconnection.shared.RemoteChannel;
 import fi.jasoft.remoteconnection.shared.RemoteConnection;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionConfiguration;
 import fi.jasoft.remoteconnection.shared.RemoteConnectionDataListener;
+import fi.jasoft.remoteconnection.shared.RemoteConnectionErrorHandler;
 
 /**
  * Client side widget. Can extend any GWT widget.
@@ -71,6 +74,16 @@ public class TextChatWidget extends Composite {
 				messages.setText(messages.getText()+channel.getId()+" >> "+data+"\n");				
 			}
 		});    	    	
+    	
+    	// Listen for errors
+    	peer.setErrorHandler(new RemoteConnectionErrorHandler() {
+			
+			@Override
+			public boolean onConnectionError(ConnectionError error, String message) {
+				Window.alert(message);
+				return error != ConnectionError.CHANNEL_ERROR;
+			}
+		});
     }
     
     private void buildUI(){

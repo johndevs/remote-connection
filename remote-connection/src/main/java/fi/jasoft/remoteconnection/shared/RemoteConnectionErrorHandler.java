@@ -30,6 +30,6 @@ public interface RemoteConnectionErrorHandler {
 	 * @return
 	 * 		True if the connection to the signalling server should be terminated.
 	 */
-	boolean onConnectionError(ConnectionError error);
+	boolean onConnectionError(ConnectionError error, String message);
 	
 }

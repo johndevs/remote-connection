@@ -55,9 +55,9 @@ public class RemoteConnectionConnector extends AbstractExtensionConnector {
     	connection.setErrorHandler(new RemoteConnectionErrorHandler() {
 			
 			@Override
-			public boolean onConnectionError(ConnectionError error) {
-				rpc.error(error.toString());
-				return true;
+			public boolean onConnectionError(ConnectionError error, String message) {
+				rpc.error(message);
+				return error != ConnectionError.CHANNEL_ERROR;
 			}
 		});
     	
