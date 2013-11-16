@@ -20,26 +20,9 @@ project(':remote-connection'){
 			title 'RemoteConnection'
 		}
 	}
-	
-	task sourcesJar(type: Jar, dependsOn: classes) {
-               	classifier = 'sources'
-               	from sourceSets.main.allSource
-        }
-
-	task javadocJar(type: Jar, dependsOn: javadoc) {
-                classifier = 'javadoc'
-               	from javadoc.destinationDir
-        }
-
-        artifacts {
-               	archives sourcesJar
-               	archives javadocJar
-        }
 
 	jar{
-		dependsOn project.sourcesJar,project.javadocJar
-		
-		// Include source in jar (since we cannot publish two jars in directory)
+		// Include source in jar
 		from sourceSets.main.allJava
 	}
 		
@@ -48,7 +31,6 @@ project(':remote-connection'){
 project(':server-example'){
 	dependencies {
 		compile project(':remote-connection')
-		compile project(path: ':remote-connection', configuration: 'archives')
 	}
 
 	vaadin {
@@ -62,7 +44,6 @@ project(':server-example'){
 project(':client-example'){
         dependencies {
 		compile project(path: ':remote-connection')
-		compile project(path: ':remote-connection', configuration: 'archives') 
         }       
         
         vaadin {
@@ -77,7 +58,6 @@ project(':client-example'){
 project(':chatroom'){
         dependencies {
                 compile project(':remote-connection')
-                compile project(path: ':remote-connection', configuration: 'archives')
         }
 
         vaadin {
