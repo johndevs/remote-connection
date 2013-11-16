@@ -172,7 +172,7 @@ public class ClientRemoteConnection implements RemoteConnection {
     
     private RemoteConnectionErrorHandler errorHandler;
     
-    private static String PEER_JS_URL = "http://cdn.peerjs.com/0.3/peer.min.js";
+    private static String PEER_JS_URL = "http://cdn.peerjs.com/0.3.4/peer.min.js";
     
     private boolean scriptLoaded = false;
     

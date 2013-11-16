@@ -74,5 +74,16 @@ project(':client-example'){
         }       
 }
 
+project(':chatroom'){
+        dependencies {
+                compile project(':remote-connection')
+                compile project(path: ':remote-connection', configuration: 'archives')
+        }
+
+        vaadin {
+                widgetset 'fi.jasoft.chatroom.ChatRoomWidgetset'
+                gwt.userAgent 'gecko1_8,safari'
+        }
+}
 
 

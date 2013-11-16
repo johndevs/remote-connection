@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry exported="true" kind="src" path="/remote-connection"/>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-theme-compiler/7.1.8/jar/779a602277d241ccecc12dd17846d06d544cef44/vaadin-theme-compiler-7.1.8.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-theme-compiler/7.1.8/source/65ae60dadcdc991062535b0065144b7190315e31/vaadin-theme-compiler-7.1.8-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-server/7.1.8/jar/8bba8c8c414852ce239cfec6edc4e314a45b070f/vaadin-server-7.1.8.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-server/7.1.8/source/9357960e8ca19bcf29fbd3b851279e9509b3a5ff/vaadin-server-7.1.8-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-themes/7.1.8/jar/912b72463da9d8a403b073e2b78882a15743938/vaadin-themes-7.1.8.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-shared-deps/1.0.2/jar/6e5d9caa40b2d94cb7d917bf295b809913335b2f/vaadin-shared-deps-1.0.2.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-shared-deps/1.0.2/source/7d65dd313c4ebbbfcdecd346a715110788738d70/vaadin-shared-deps-1.0.2-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-shared/7.1.8/jar/dd928d666469e90f490070687726ac859d9af8dc/vaadin-shared-7.1.8.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-shared/7.1.8/source/768aeb340a52385edb581de43c90f55a457a1fd9/vaadin-shared-7.1.8-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-logging/commons-logging/1.1.1/jar/5043bfebc3db072ed80fbd362e7caf00e885d8ae/commons-logging-1.1.1.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-logging/commons-logging/1.1.1/source/f3f156cbff0e0fb0d64bfce31a352cce4a33bc19/commons-logging-1.1.1-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.apache.commons/commons-jexl/2.1.1/jar/6ecc181debade00230aa1e17666c4ea0371beaaa/commons-jexl-2.1.1.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.apache.commons/commons-jexl/2.1.1/source/6819924664fe02ff8da255f665be6e4dedf95e18/commons-jexl-2.1.1-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.w3c.css/sac/1.3/jar/cdb2dcb4e22b83d6b32b93095f644c3462739e82/sac-1.3.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.w3c.css/sac/1.3/source/d0eab9163d161293dcd1e291bc2b6b09b4b5c717/sac-1.3-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/net.sourceforge.cssparser/cssparser/0.9.5/jar/7222f4a7e50fc57a88a546a228088524bdbbdaea/cssparser-0.9.5.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/net.sourceforge.cssparser/cssparser/0.9.5/source/58cc6bd1c19526776abe6943d29d10bd81dbad5f/cssparser-0.9.5-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-cli/commons-cli/1.2/jar/2bf96b7aa8b611c177d329452af1dc933e14501c/commons-cli-1.2.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-cli/commons-cli/1.2/source/6c5459816530a1962ac18cd315cc775b1b384329/commons-cli-1.2-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.jsoup/jsoup/1.6.3/jar/5cf4f55a71ae352d9c13ede8388974527540e506/jsoup-1.6.3.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.jsoup/jsoup/1.6.3/source/242ea29175dcca8cbbea614d64f8bd91193a1537/jsoup-1.6.3-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-client-compiler/7.1.8/jar/12e2aae84e783f30d4ff6b9db3c1b532eb09a887/vaadin-client-compiler-7.1.8.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-client-compiler/7.1.8/source/24953cb1ae6c39895f7cfcbac66f4543deddf1b5/vaadin-client-compiler-7.1.8-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-client/7.1.8/jar/6f65f2aeaf0ea929e62eccb0c9a6766a9259f232/vaadin-client-7.1.8.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-client/7.1.8/source/8ddb9495ccf374ecf8b225cdef31d88a6218f050/vaadin-client-7.1.8-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/javax.validation/validation-api/1.0.0.GA/jar/b6bd7f9d78f6fdaa3c37dae18a4bd298915f328e/validation-api-1.0.0.GA.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/javax.validation/validation-api/1.0.0.GA/source/7a561191db2203550fbfa40d534d4997624cd369/validation-api-1.0.0.GA-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/javax.validation/validation-api/1.0.0.GA/jar/7a561191db2203550fbfa40d534d4997624cd369/validation-api-1.0.0.GA-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-collections/commons-collections/3.1/jar/40fb048097caeacdb11dbb33b5755854d89efdeb/commons-collections-3.1.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-collections/commons-collections/3.1/source/a48ca211fd2a564425c2cb9b90cb0f9158cfce52/commons-collections-3.1-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/ant/ant/1.6.5/jar/7d18faf23df1a5c3a43613952e0e8a182664564b/ant-1.6.5.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/ant/ant/1.6.5/source/9e0a847494563f35f9b02846a1c1eb4aa2ee5a9a/ant-1.6.5-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/ant/ant-launcher/1.6.5/jar/b06fd72d7cabd5ec39cea153a21fa5cea5d37f71/ant-launcher-1.6.5.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.jdesktop/swing-worker/1.1/jar/dc9f8d6f7236087924aad28fbec794a087dd1b3d/swing-worker-1.1.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-codec/commons-codec/1.3/jar/fd32786786e2adb664d5ecc965da47629dca14ba/commons-codec-1.3.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-codec/commons-codec/1.3/source/ee264b5d7a0f939d5999398c7f1ade031db3fcec/commons-codec-1.3-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-io/commons-io/2.2/jar/83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a/commons-io-2.2.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-io/commons-io/2.2/source/8d6b98f21262995489a8418fff8da992d7e25c1e/commons-io-2.2-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-lang/commons-lang/2.6/jar/ce1edb914c94ebc388f086c6827e8bdeec71ac2/commons-lang-2.6.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/commons-lang/commons-lang/2.6/source/67313d715fbf0ea4fd0bdb69217fb77f807a8ce5/commons-lang-2.6-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.apache.james/apache-mime4j/0.6/jar/945007627e8d12275d755081a9e609c018e1210d/apache-mime4j-0.6.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.apache.james/apache-mime4j/0.6/source/16691d73bd331c11ac1c7c269b9ff2cb1cda17ac/apache-mime4j-0.6-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-client-compiler-deps/1.0.2/jar/ca682cea438815d0393694f6971d540c30ad61df/vaadin-client-compiler-deps-1.0.2.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/com.vaadin/vaadin-client-compiler-deps/1.0.2/source/706ca6e376a571fa1a0ca2aa99b8c15d73d07221/vaadin-client-compiler-deps-1.0.2-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.aggregate/jetty-all-server/8.1.10.v20130312/jar/581c7ae30a47675c2340e56115b0dd95ae5019da/jetty-all-server-8.1.10.v20130312.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.aggregate/jetty-all-server/8.1.10.v20130312/source/39de8ebed4c5bccc26c6db231cbd8f964f77e1f7/jetty-all-server-8.1.10.v20130312-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/fi.jasoft.plugin/gradle-vaadin-plugin/0.6.4/jar/17b2784e28e7a7ce7493e4fdccdd5d9b3b0c4e55/gradle-vaadin-plugin-0.6.4.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/asm/asm-all/3.3.1/jar/648990d00fd7b04f9768c953051839d9f61c1dbe/asm-all-3.3.1.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/asm/asm-all/3.3.1/source/df8ce10a204823222271bed2d52a4ab604f4c2a6/asm-all-3.3.1-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/javax.servlet.jsp/jsp-api/2.2/jar/5bf0c26ef77df58c7c28be2d9d52246f2b437a54/jsp-api-2.2.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/javax.servlet.jsp/jsp-api/2.2/source/78bc1457a1fc2f8a7037cd2b247062ab3daac212/jsp-api-2.2-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.servlet/3.0.0.v201112011016/orbit/aaaa85845fb5c59da00193f06b8e5278d8bf3f8/javax.servlet-3.0.0.v201112011016.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.servlet/3.0.0.v201112011016/source/15c914135cf30177b83c321250c458396289cd37/javax.servlet-3.0.0.v201112011016-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.security.auth.message/1.0.0.v201108011116/orbit/864ac89e01622b020fa2104bfda379692146b3b6/javax.security.auth.message-1.0.0.v201108011116.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.security.auth.message/1.0.0.v201108011116/source/8ef26b3c25ef4841018aba57e2f063c89bbfb194/javax.security.auth.message-1.0.0.v201108011116-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.activation/1.1.0.v201105071233/orbit/b394a9fbf664ca835452b3ced452710bcf79fd81/javax.activation-1.1.0.v201105071233.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.activation/1.1.0.v201105071233/source/350bd9b2a184ff0b1981809a299d9a663c2e9895/javax.activation-1.1.0.v201105071233-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.mail.glassfish/1.4.1.v201005082020/orbit/b707c39fc080529c4a9ffc1df4eac58421133aaf/javax.mail.glassfish-1.4.1.v201005082020.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.mail.glassfish/1.4.1.v201005082020/source/b12c43ddc708b244291f62c55a440dc272a947ff/javax.mail.glassfish-1.4.1.v201005082020-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.annotation/1.1.0.v201108011116/orbit/964b4bd5e4f40d6497fd302e2e66c4a4257138b3/javax.annotation-1.1.0.v201108011116.jar" sourcepath="/home/johnnie/.gradle/caches/artifacts-26/filestore/org.eclipse.jetty.orbit/javax.annotation/1.1.0.v201108011116/source/374b74f795300b6ea4d9950589b80ddcac509d5b/javax.annotation-1.1.0.v201108011116-sources.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="build/classes/main"/>
+</classpath>

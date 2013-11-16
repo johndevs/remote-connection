@@ -1,0 +1,74 @@
+@import "../reindeer/reindeer.scss";
+
+@mixin chatroom {
+	@include reindeer;
+
+	&.v-app {
+		color:white;
+		background:url('background.jpeg');
+	}	
+	
+	.header-large {
+		line-height: 75px;
+	}
+	
+	.header-large .header{
+		font-size: 75px;
+	}
+	
+	.header-small {
+		line-height: 50px;
+		background: rgba(0,0,0,0.5);
+	}
+	
+	.header-small .header{
+		font-size: 30px;
+	}
+	
+	.poweredby{
+	
+	}
+
+	.v-widget {
+		
+	} 
+
+	.chat {
+	
+		float:left;
+		width:90%;
+      	height:100%;
+      	
+      	.message-box {
+      		height:90%;
+      		overflow:auto;
+      		border-bottom:1px solid #aaa;
+      		color:white;
+      		font-size:1.2em;
+      	}
+      	
+      	.chat-message-box {
+      		height:10%;
+      		width:100%;
+      		min-height:20px;
+      		resize:none;
+      		border:0;
+      		padding:0;
+      		margin:0;
+      		background: rgba(255,255,255,0.2);
+      		color: #eeeeee;
+      		font-size:1.2em;
+      	}
+	}
+	
+	.user-list {
+	
+		float:left;
+		width:10%;
+		height:100%;
+		
+		background-color:rgba(123,123,123,0.16);
+		color: white;
+		font-weight: bold;
+	}
+}
