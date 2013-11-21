@@ -45,7 +45,7 @@ public class ChatRoomApplication extends Composite {
 	
 	private Map<String,String> userNames = new HashMap<String, String>();
 	{
-		userNames.put("", "Everybody");
+		userNames.put("", "* Chat Users *");
 	}
 	
 	public ChatRoomApplication() {
@@ -94,7 +94,7 @@ public class ChatRoomApplication extends Composite {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {								
-				if(sm.getSelectedObject().equals("Everybody")){
+				if(sm.getSelectedObject().equals(userNames.get(""))){
 					sm.clear();
 					selectedUserId = null;
 				} else {
@@ -107,7 +107,7 @@ public class ChatRoomApplication extends Composite {
 				}				
 			}
 		});	
-		
+			
 		root.add(users);	
 		
 		connection = ClientRemoteConnection.register();

@@ -62,7 +62,9 @@ project(':chatroom'){
 
         vaadin {
                 widgetset 'fi.jasoft.chatroom.ChatRoomWidgetset'
-                gwt.userAgent 'gecko1_8,safari'
+                gwt {
+			userAgent 'gecko1_8,safari'
+		}
         }
 }
 
