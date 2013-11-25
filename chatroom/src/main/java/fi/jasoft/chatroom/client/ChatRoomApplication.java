@@ -45,7 +45,7 @@ public class ChatRoomApplication extends Composite {
 	
 	private Map<String,String> userNames = new HashMap<String, String>();
 	{
-		userNames.put("", "* Chat Users *");
+		userNames.put("", "* All Chat Users *");
 	}
 	
 	public ChatRoomApplication() {
