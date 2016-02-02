@@ -8,13 +8,19 @@ subprojects {
 	apply plugin: 'eclipse-wtp'
 	sourceCompatibility = 1.6
 	targetCompatibility = 1.6
+    vaadin {
+        version '7.6.1'
+        gwt {
+            userAgent 'gecko1_8,safari'
+            strict true
+        }
+    }
 }
 
 project(':remote-connection'){
-
 	vaadin {
 		widgetset 'fi.jasoft.remoteconnection.RemoteConnectionWidgetset'
-		addon {
+        addon {
 			author 'John Ahlroos'
 			license 'Apache 2.0'
 			title 'RemoteConnection'
@@ -24,48 +30,34 @@ project(':remote-connection'){
 	jar{
 		// Include source in jar
 		from sourceSets.main.allJava
-	}
-		
+	}		
 }
 
 project(':server-example'){
 	dependencies {
 		compile project(':remote-connection')
 	}
-
 	vaadin {
 		widgetset 'fi.jasoft.remoteconnection.ServerExampleWidgetset'
-		gwt {
-			userAgent 'gecko1_8,safari'
-		}
 	}
 }
 
 project(':client-example'){
-        dependencies {
-		compile project(path: ':remote-connection')
-        }       
-        
-        vaadin {
-                widgetset 'fi.jasoft.remoteconnection.ClientExampleWidgetset'
-		gwt {
-			userAgent 'gecko1_8,safari'
-			strict true
-		}
-        }       
+    dependencies {
+	    compile project(path: ':remote-connection')
+    }              
+    vaadin {
+        widgetset 'fi.jasoft.remoteconnection.ClientExampleWidgetset'
+    }       
 }
 
 project(':chatroom'){
-        dependencies {
-                compile project(':remote-connection')
-        }
-
-        vaadin {
-                widgetset 'fi.jasoft.chatroom.ChatRoomWidgetset'
-                gwt {
-			userAgent 'gecko1_8,safari'
-		}
-        }
+    dependencies {
+        compile project(':remote-connection')
+    }
+    vaadin {
+        widgetset 'fi.jasoft.chatroom.ChatRoomWidgetset'
+    }
 }
 
 
