@@ -8,7 +8,6 @@ subprojects {
 	apply plugin: 'eclipse-wtp'
 	sourceCompatibility = 1.6
 	targetCompatibility = 1.6
-    basename = 'remote-connection'
     vaadin {
         version '7.6.1'
         gwt {
@@ -19,7 +18,9 @@ subprojects {
 }
 
 project(':remote-connection'){
-	vaadin {
+	apply plugin: 'maven'
+
+    vaadin {
 		widgetset 'fi.jasoft.remoteconnection.RemoteConnectionWidgetset'
         addon {
 			author 'John Ahlroos'
@@ -32,6 +33,12 @@ project(':remote-connection'){
 		// Include source in jar
 		from sourceSets.main.allJava
 	}
+    task createAddonPom {
+        pom { artifactId = 'remote-connection' }.writeTo("META-INF/maven/fi.jasoft/remote-connection/pom.xml")
+    }
+    configurations {
+        deploy
+    }
     artifacts {
         archives jar
     }
