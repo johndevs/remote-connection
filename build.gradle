@@ -39,6 +39,9 @@ project(':remote-connection'){
     configurations {
         deploy
     }
+    dependencies {
+         deploy 'org.apache.maven.wagon:wagon-ssh:2.2'
+    }
     artifacts {
         archives jar
     }
