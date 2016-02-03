@@ -16,8 +16,24 @@ subprojects {
             strict true
         }
     }
+}
+
+project(':remote-connection'){
+	vaadin {
+		widgetset 'fi.jasoft.remoteconnection.RemoteConnectionWidgetset'
+        addon {
+			author 'John Ahlroos'
+			license 'Apache 2.0'
+			title 'RemoteConnection'
+		}
+	}
+
+	jar{
+		// Include source in jar
+		from sourceSets.main.allJava
+	}
     artifacts {
-      archives jar
+        archives jar
     }
     uploadArchives {
         dependsOn createAddonPom
@@ -40,23 +56,7 @@ subprojects {
                 artifact.ext == 'jar'
             }
         }
-    }
-}
-
-project(':remote-connection'){
-	vaadin {
-		widgetset 'fi.jasoft.remoteconnection.RemoteConnectionWidgetset'
-        addon {
-			author 'John Ahlroos'
-			license 'Apache 2.0'
-			title 'RemoteConnection'
-		}
-	}
-
-	jar{
-		// Include source in jar
-		from sourceSets.main.allJava
-	}		
+    }		
 }
 
 project(':server-example'){
@@ -80,8 +80,7 @@ project(':client-example'){
     }
     war {
         archiveName = 'RemoteConnection-Client.war'
-    }
-  }       
+    }       
 }
 
 project(':chatroom'){
