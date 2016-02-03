@@ -8,11 +8,37 @@ subprojects {
 	apply plugin: 'eclipse-wtp'
 	sourceCompatibility = 1.6
 	targetCompatibility = 1.6
+    basename = 'remote-connection'
     vaadin {
         version '7.6.1'
         gwt {
             userAgent 'gecko1_8,safari'
             strict true
+        }
+    }
+    artifacts {
+      archives jar
+    }
+    uploadArchives {
+        dependsOn createAddonPom
+        repositories.mavenDeployer {
+            def snapshotRepositoryUrl = System.getProperty('PLUGIN_MAVEN_SNAPSHOT_REPOSITORY')
+            def snapshotRepositoryUser = System.getProperty('PLUGIN_MAVEN_SNAPSHOT_REPOSITORY_USER')
+            def snapshotRepositoryPassword = System.getProperty('PLUGIN_MAVEN_SNAPSHOT_REPOSITORY_PASSWORD')
+            def snapshotRepositoryPrivateKey = System.getProperty('PLUGIN_MAVEN_SNAPSHOT_REPOSITORY_KEY')
+
+            configuration = configurations.deploy
+
+            snapshotRepository( url: snapshotRepositoryUrl ) {
+                authentication(
+                     userName: snapshotRepositoryUser,
+                     password: snapshotRepositoryPassword,
+                     privateKey: snapshotRepositoryPrivateKey
+                )
+            }
+            addFilter('jar') {artifact, file ->
+                artifact.ext == 'jar'
+            }
         }
     }
 }
@@ -40,6 +66,9 @@ project(':server-example'){
 	vaadin {
 		widgetset 'fi.jasoft.remoteconnection.ServerExampleWidgetset'
 	}
+    war {
+        archiveName = 'RemoteConnection-Server.war'
+    }
 }
 
 project(':client-example'){
@@ -48,7 +77,11 @@ project(':client-example'){
     }              
     vaadin {
         widgetset 'fi.jasoft.remoteconnection.ClientExampleWidgetset'
-    }       
+    }
+    war {
+        archiveName = 'RemoteConnection-Client.war'
+    }
+  }       
 }
 
 project(':chatroom'){
@@ -57,6 +90,9 @@ project(':chatroom'){
     }
     vaadin {
         widgetset 'fi.jasoft.chatroom.ChatRoomWidgetset'
+    }
+    war {
+        archiveName = 'Chatroom.war'
     }
 }
 
