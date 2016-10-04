@@ -1,5 +1,6 @@
-RemoteConnection addon for Vaadin
-=================================
+# RemoteConnection addon for Vaadin
+
+# This project has reached End-Of-Life (EOL) and is no longer maintained.
 
 The RemoteConnection addon can be used with Vaadin or GWT to establish a WebRTC communication channel between two browsers without needed to communicate with the server. WebRTC is currently supported both by the latest stable Chrome and Firefox versions. Even if it should work cross browser I have found that currently doing WebRTC between Chrome and Firefox will not work reliably and using the current version of the addon is only recommended between the same browsers.
 
